@@ -3,171 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Library</title>
+    <title>NS Library Vault</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body { background-color: #0f172a; color: #e2e8f0; font-family: ui-sans-serif, system-ui, sans-serif; }
-        .game-card { transition: all 0.2s ease; }
-        .game-card:hover { border-color: #38bdf8; background-color: #1e293b; }
-    </style>
 </head>
-<body class="p-4 md:p-10">
+<body class="p-4 md:p-10 bg-[#0f172a] text-[#e2e8f0]">
     <div class="max-w-6xl mx-auto">
         <header class="mb-10">
-            <h1 class="text-2xl font-bold text-slate-100 mb-2"> Nintendo Switch Library</h1>
-            <p class="text-slate-400 text-sm">Game Storage</p>
+            <h1 class="text-2xl font-bold text-slate-100 mb-2">🎮 Nintendo Switch Library</h1>
+            <p id="game-count" class="text-slate-400 text-sm italic">Loading library...</p>
         </header>
         
-        <!-- Thanh tìm kiếm -->
         <div class="relative mb-8">
-            <input type="text" id="search" placeholder="Tìm tên game hoặc ID..." 
-                class="w-full p-3 pl-10 rounded-lg bg-slate-800 border border-slate-700 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition">
+            <input type="text" id="search" placeholder="Search game or ID..." 
+                class="w-full p-3 pl-10 rounded-lg bg-slate-800 border border-slate-700 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition text-white">
             <span class="absolute left-3 top-3.5 opacity-40">🔍</span>
         </div>
 
-        <!-- Grid danh sách game -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="game-list">
-            
-            <!-- Mẫu 1 Game: Copy đoạn này để thêm game mới -->
-            <div class="game-card bg-slate-800/50 p-5 rounded-xl border border-slate-700 shadow-sm flex flex-col justify-between">
-                <div>
-                    <h3 class="text-lg font-bold text-sky-400 truncate mb-3">Fire Emblem Engage</h3>
-                    <div class="space-y-1.5 text-sm">
-                        <div class="flex justify-between">
-                            <span class="text-slate-500">ID:</span>
-                            <span class="font-mono text-slate-300">0100A6301214E000</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-slate-500">Type:</span>
-                            <span class="text-slate-300">eShop [NSP]</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-slate-500">Size:</span>
-                            <span class="text-slate-300">19.8 GB</span>
-                        </div>
-                    </div>
-                </div>
-                <a href="https://drive.google.com/drive/folders/1BfcVOoQTtoJWpAu3hiCwCfBa-p0PGVE2?usp=drive_link" target="_blank" 
-                   class="mt-5 block text-center bg-slate-700 hover:bg-sky-600 text-white font-medium py-2 rounded-lg transition-colors">
-                   Download
-                </a>
-            </div>
-            <!-- END -->
-
-            <!-- Game 2 -->
-            <div class="game-card bg-slate-800/50 p-5 rounded-xl border border-slate-700 shadow-sm flex flex-col justify-between">
-                <div>
-                    <h3 class="text-lg font-bold text-sky-400 truncate mb-3">Xenoblade Chronicles 3</h3>
-                    <div class="space-y-1.5 text-sm">
-                        <div class="flex justify-between">
-                            <span class="text-slate-500">ID:</span>
-                            <span class="font-mono text-slate-300">010074F013262000</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-slate-500">Type:</span>
-                            <span class="text-slate-300">eShop [NSP]</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-slate-500">Size:</span>
-                            <span class="text-slate-300">18.8 GB</span>
-                        </div>
-                    </div>
-                </div>
-                <a href="https://drive.google.com/file/d/1lBPjOviAVcC1MCo-WWxQ219EtIL-NST5/view?usp=drive_link" target="_blank" 
-                   class="mt-5 block text-center bg-slate-700 hover:bg-sky-600 text-white font-medium py-2 rounded-lg transition-colors">
-                   Download
-                </a>
-            </div>
-            <!-- END -->
-             <!-- Game 2 -->
-            <div class="game-card bg-slate-800/50 p-5 rounded-xl border border-slate-700 shadow-sm flex flex-col justify-between">
-                <div>
-                    <h3 class="text-lg font-bold text-sky-400 truncate mb-3">It Takes Two</h3>
-                    <div class="space-y-1.5 text-sm">
-                        <div class="flex justify-between">
-                            <span class="text-slate-500">ID:</span>
-                            <span class="font-mono text-slate-300">010092A0172E4000</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-slate-500">Type:</span>
-                            <span class="text-slate-300">eShop [NSP]</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-slate-500">Size:</span>
-                            <span class="text-slate-300">13.0 GB</span>
-                        </div>
-                    </div>
-                </div>
-                <a href="https://drive.google.com/drive/folders/1fakxgq3KY11NvUj-tL9qJTvT3cVkT6BX?usp=drive_link" target="_blank" 
-                   class="mt-5 block text-center bg-slate-700 hover:bg-sky-600 text-white font-medium py-2 rounded-lg transition-colors">
-                   Download
-                </a>
-            </div>
-            <!-- END -->
-            <!-- Game 2 -->
-            <div class="game-card bg-slate-800/50 p-5 rounded-xl border border-slate-700 shadow-sm flex flex-col justify-between">
-                <div>
-                    <h3 class="text-lg font-bold text-sky-400 truncate mb-3">Mario Kart 8 Deluxe</h3>
-                    <div class="space-y-1.5 text-sm">
-                        <div class="flex justify-between">
-                            <span class="text-slate-500">ID:</span>
-                            <span class="font-mono text-slate-300">0100152000022000</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-slate-500">Type:</span>
-                            <span class="text-slate-300">eShop [NSP]</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-slate-500">Size:</span>
-                            <span class="text-slate-300">12.0 GB</span>
-                        </div>
-                    </div>
-                </div>
-                <a href="https://drive.google.com/drive/folders/1cvaM0ni_vksXE9WYpDGq6VhQaI3NvV_j?usp=drive_link" target="_blank" 
-                   class="mt-5 block text-center bg-slate-700 hover:bg-sky-600 text-white font-medium py-2 rounded-lg transition-colors">
-                   Download
-                </a>
-            </div>
-            <!-- END --> 
-            <!-- Game 2 -->
-            <div class="game-card bg-slate-800/50 p-5 rounded-xl border border-slate-700 shadow-sm flex flex-col justify-between">
-                <div>
-                    <h3 class="text-lg font-bold text-sky-400 truncate mb-3">The Legend of Zelda: Tears of the Kingdom</h3>
-                    <div class="space-y-1.5 text-sm">
-                        <div class="flex justify-between">
-                            <span class="text-slate-500">ID:</span>
-                            <span class="font-mono text-slate-300">0100F2C0115B6000</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-slate-500">Type:</span>
-                            <span class="text-slate-300">eShop [NSP]</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-slate-500">Size:</span>
-                            <span class="text-slate-300">17.6 GB</span>
-                        </div>
-                    </div>
-                </div>
-                <a href="https://drive.google.com/drive/folders/11G5dzjueXKZOxaWCRwSC_jFN83JutlEN?usp=drive_link" target="_blank" 
-                   class="mt-5 block text-center bg-slate-700 hover:bg-sky-600 text-white font-medium py-2 rounded-lg transition-colors">
-                   Download
-                </a>
-            </div>
-            <!-- END -->
+            <!-- Game items sẽ tự động hiện ở đây -->
         </div>
     </div>
 
     <script>
-        // Xử lý tìm kiếm theo Tên hoặc ID
-        document.getElementById('search').addEventListener('input', function(e) {
-            let term = e.target.value.toLowerCase();
-            let cards = document.querySelectorAll('.game-card');
-            cards.forEach(card => {
-                let name = card.querySelector('h3').innerText.toLowerCase();
-                let id = card.querySelector('.font-mono').innerText.toLowerCase();
-                card.style.display = (name.includes(term) || id.includes(term)) ? 'flex' : 'none';
-            });
+        let allGames = [];
+
+        // Hàm fetch dữ liệu từ file games.json
+        async function loadGames() {
+            try {
+                const response = await fetch('games.json');
+                allGames = await response.json();
+                renderGames(allGames);
+                document.getElementById('game-count').innerText = `Total: ${allGames.length} games in vault`;
+            } catch (error) {
+                console.error("Lỗi load file JSON:", error);
+                document.getElementById('game-list').innerHTML = "<p class='text-red-400'>Không thể load danh sách game. Kiểm tra file games.json!</p>";
+            }
+        }
+
+        // Hàm vẽ giao diện
+        function renderGames(games) {
+            const container = document.getElementById('game-list');
+            container.innerHTML = games.map(game => `
+                <div class="bg-slate-800/50 p-5 rounded-xl border border-slate-700 shadow-sm flex flex-col justify-between hover:border-sky-500 transition-all">
+                    <div>
+                        <h3 class="text-lg font-bold text-sky-400 truncate mb-3" title="${game.name}">${game.name}</h3>
+                        <div class="space-y-1.5 text-sm">
+                            <div class="flex justify-between"><span class="text-slate-500">ID:</span><span class="font-mono text-slate-300">${game.id}</span></div>
+                            <div class="flex justify-between"><span class="text-slate-500">Version:</span><span class="text-slate-300">${game.version}</span></div>
+                            <div class="flex justify-between"><span class="text-slate-500">Size:</span><span class="text-slate-300">${game.size}</span></div>
+                        </div>
+                    </div>
+                    <a href="${game.link}" target="_blank" class="mt-5 block text-center bg-slate-700 hover:bg-sky-600 text-white font-medium py-2 rounded-lg transition-colors">Download</a>
+                </div>
+            `).join('');
+        }
+
+        // Logic search
+        document.getElementById('search').addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const filtered = allGames.filter(g => 
+                g.name.toLowerCase().includes(term) || g.id.toLowerCase().includes(term)
+            );
+            renderGames(filtered);
         });
+
+        loadGames();
     </script>
 </body>
 </html>
