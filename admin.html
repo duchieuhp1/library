@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Auto Metadata Fetcher</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; max-width: 600px; }
+        input { padding: 8px; width: 300px; }
+        button { padding: 8px 15px; cursor: pointer; }
+        .result-box { margin-top: 20px; padding: 15px; background: #f4f4f4; border-radius: 5px; }
+        textarea { width: 100%; margin-top: 10px; font-family: monospace; }
+        img { border-radius: 8px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <h2>🛠️ Công cụ lấy Metadata tự động</h2>
+    <p>Nhập ID game để hệ thống tự quét Tên và Thumbnail qua Proxy.</p>
+    
+    <input type="text" id="game-id" placeholder="VD: 0100A6301214E000">
+    <button onclick="fetchMetadata()">Tìm Kiếm</button>
+
+    <div id="result" class="result-box" style="display: none;"></div>
+
+    <script>
+        async function fetchMetadata() {
+            const id = document.getElementById('game-id').value.trim();
+            const resultDiv = document.getElementById('result');
+            
+            if (!id) return alert('Vui lòng nhập ID!');
+
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = "⏳ Đang tải dữ liệu, vui lòng đợi...";
+
+            try {
+                // Dùng AllOrigins để bypass CORS
+                const targetUrl = `https://tinfoil.io/Title/${id}`;
+                const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`;
+                
+                const response = await fetch(proxyUrl);
+                const data = await response.json();
+                
+                // Parse HTML từ kết quả trả về
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(data.contents, 'text/html');
+                
+                // Trích xuất Tên
+                const titleTag = doc.querySelector('title');
+                let name = titleTag ? titleTag.innerText.replace(' - Tinfoil', '').trim() : 'Unknown Game';
+                
+                // Trích xuất Ảnh bìa
+                const imgSelectors = doc.querySelectorAll('img');
+                let thumbnail = "https://via.placeholder.com/150?text=No+Image";
+                imgSelectors.forEach(img => {
+                    if(img.src.includes('title') || img.src.includes('tinfoil.io/images')) {
+                        thumbnail = img.src;
+                    }
+                });
+
+                // Format lại JSON để copy
+                const finalJson = {
+                    name: name,
+                    id: id,
+                    version: "NSP",
+                    size: "TBD",
+                    link: "",
+                    thumbnail: thumbnail
+                };
+
+                resultDiv.innerHTML = `
+                    <h3>✅ Đã tìm thấy!</h3>
+                    <img src="${thumbnail}" width="120" alt="thumbnail">
+                    <p><strong>Tên Game:</strong> ${name}</p>
+                    <p>Copy đoạn JSON bên dưới dán vào <b>games.json</b>:</p>
+                    <textarea rows="9" onclick="this.select()">${JSON.stringify(finalJson, null, 4)},</textarea>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `<p style="color:red;">❌ Lỗi: Không thể lấy dữ liệu (${error.message})</p>`;
+            }
+        }
+    </script>
+</body>
+</html>
