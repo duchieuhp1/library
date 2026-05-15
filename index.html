@@ -2,116 +2,33 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nintendo Switch Storage</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Game Library</title>
     <style>
-        body { background-color: #0f172a; color: #e2e8f0; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
-        .row-hover:hover { background-color: #1e293b; }
-        .sticky-header { position: sticky; top: 0; background: #0f172a; z-index: 10; }
+        /* CSS cơ bản để dễ nhìn hơn */
+        body { font-family: sans-serif; padding: 20px; }
+        .toolbar { margin-bottom: 20px; }
+        .game-item { border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; border-radius: 5px; }
+        .game-item h3 { margin: 0 0 5px 0; }
+        .game-link { color: blue; text-decoration: none; }
     </style>
 </head>
-<body class="p-2 md:p-6">
-    <div class="max-w-7xl mx-auto">
-        <!-- Header & Search -->
-        <div class="sticky-header pb-4">
-            <div class="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-4">
-                <div>
-                    <h1 class="text-xl font-bold text-sky-400">Nintendo Switch Storage</h1>
-                    <p id="game-count" class="text-xs text-slate-500 italic">Scanning files...</p>
-                </div>
-                <div class="relative flex-1 max-w-md">
-                    <input type="text" id="search" placeholder="Search by name or ID..." 
-                        class="w-full p-2 pl-9 rounded bg-slate-800 border border-slate-700 focus:outline-none focus:ring-1 focus:ring-sky-500 text-sm">
-                    <span class="absolute left-3 top-2.5 opacity-30 text-sm">🔍</span>
-                </div>
-            </div>
+<body>
 
-            <!-- Table Header -->
-            <div class="hidden md:grid grid-cols-12 gap-2 px-4 py-2 border-b border-slate-700 text-xs font-bold text-slate-500 uppercase tracking-wider">
-                <div class="col-span-5">Name</div>
-                <div class="col-span-3">Title ID</div>
-                <div class="col-span-1 text-center">Version</div>
-                <div class="col-span-1 text-right">Size</div>
-                <div class="col-span-2 text-right">Action</div>
-            </div>
-        </div>
-
-        <!-- List Content -->
-        <div id="game-list" class="divide-y divide-slate-800/50">
-            <!-- Rows tự động fill ở đây -->
-        </div>
+    <div class="toolbar">
+        <strong>Tổng số:</strong> <span id="game-count">0 object(s)</span>
+        <span style="margin-left: 20px;">
+            <label for="sort-select">Sắp xếp theo:</label>
+            <select id="sort-select">
+                <option value="default">Mặc định</option>
+                <option value="name-asc">Tên (A - Z)</option>
+                <option value="name-desc">Tên (Z - A)</option>
+                <option value="id-asc">Mã Game ID (Tăng dần)</option>
+            </select>
+        </span>
     </div>
 
-    <script>
-        let allGames = [];
+    <div id="game-list">
+        </div>
 
-        async function loadGames() {
-            try {
-                const response = await fetch('games.json');
-                allGames = await response.json();
-                renderGames(allGames);
-                document.getElementById('game-count').innerText = `${allGames.length} object(s)`;
-            } catch (error) {
-                document.getElementById('game-list').innerHTML = "<p class='p-4 text-red-400'>Error: games.json not found.</p>";
-            }
-        }
-
-        function renderGames(games) {
-            const container = document.getElementById('game-list');
-            if (games.length === 0) {
-                container.innerHTML = "<p class='p-10 text-center text-slate-600'>No items match your search.</p>";
-                return;
-            }
-
-            container.innerHTML = games.map(game => `
-                <div class="row-hover grid grid-cols-1 md:grid-cols-12 gap-2 px-4 py-3 md:py-2 items-center text-sm transition-colors">
-                    <!-- Name & Icon -->
-                    <div class="col-span-1 md:col-span-5 flex items-center gap-3">
-                        <span class="text-lg">📄</span>
-                        <span class="font-medium text-slate-200 truncate" title="${game.name}">${game.name}</span>
-                    </div>
-                    
-                    <!-- ID (Mobile hides label) -->
-                    <div class="col-span-1 md:col-span-3 flex md:block justify-between">
-                        <span class="md:hidden text-slate-500 text-xs">ID:</span>
-                        <span class="text-slate-400 font-mono text-xs">${game.id}</span>
-                    </div>
-
-                    <!-- Version -->
-                    <div class="col-span-1 md:col-span-1 flex md:block justify-between md:text-center">
-                        <span class="md:hidden text-slate-500 text-xs">Version:</span>
-                        <span class="text-slate-400">${game.version}</span>
-                    </div>
-
-                    <!-- Size -->
-                    <div class="col-span-1 md:col-span-1 flex md:block justify-between md:text-right">
-                        <span class="md:hidden text-slate-500 text-xs">Size:</span>
-                        <span class="text-slate-400">${game.size}</span>
-                    </div>
-
-                    <!-- Download Button -->
-                    <div class="col-span-1 md:col-span-2 text-right mt-2 md:mt-0">
-                        <a href="${game.link}" target="_blank" 
-                           class="inline-block bg-slate-700 hover:bg-sky-600 text-slate-100 px-4 py-1 rounded text-xs font-bold transition-colors shadow-sm">
-                           Download
-                        </a>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // Filter Logic
-        document.getElementById('search').addEventListener('input', (e) => {
-            const term = e.target.value.toLowerCase();
-            const filtered = allGames.filter(g => 
-                g.name.toLowerCase().includes(term) || g.id.toLowerCase().includes(term)
-            );
-            renderGames(filtered);
-            document.getElementById('game-count').innerText = `${filtered.length} object(s) found`;
-        });
-
-        loadGames();
-    </script>
-</body>
+    <script src="app.js"></script> </body>
 </html>
