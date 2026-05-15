@@ -3,68 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NS Library Vault</title>
+    <title>NS Explorer</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0f172a; color: #e2e8f0; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+        .row-hover:hover { background-color: #1e293b; }
+        .sticky-header { position: sticky; top: 0; background: #0f172a; z-index: 10; }
+    </style>
 </head>
-<body class="p-4 md:p-10 bg-[#0f172a] text-[#e2e8f0]">
-    <div class="max-w-6xl mx-auto">
-        <header class="mb-10">
-            <h1 class="text-2xl font-bold text-slate-100 mb-2">🎮 Nintendo Switch Library</h1>
-            <p id="game-count" class="text-slate-400 text-sm italic">Loading library...</p>
-        </header>
-        
-        <div class="relative mb-8">
-            <input type="text" id="search" placeholder="Search game or ID..." 
-                class="w-full p-3 pl-10 rounded-lg bg-slate-800 border border-slate-700 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition text-white">
-            <span class="absolute left-3 top-3.5 opacity-40">🔍</span>
+<body class="p-2 md:p-6">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header & Search -->
+        <div class="sticky-header pb-4">
+            <div class="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-4">
+                <div>
+                    <h1 class="text-xl font-bold text-sky-400">Nintendo Storage Explorer</h1>
+                    <p id="game-count" class="text-xs text-slate-500 italic">Scanning files...</p>
+                </div>
+                <div class="relative flex-1 max-w-md">
+                    <input type="text" id="search" placeholder="Filter by name or ID..." 
+                        class="w-full p-2 pl-9 rounded bg-slate-800 border border-slate-700 focus:outline-none focus:ring-1 focus:ring-sky-500 text-sm">
+                    <span class="absolute left-3 top-2.5 opacity-30 text-sm">🔍</span>
+                </div>
+            </div>
+
+            <!-- Table Header -->
+            <div class="hidden md:grid grid-cols-12 gap-2 px-4 py-2 border-b border-slate-700 text-xs font-bold text-slate-500 uppercase tracking-wider">
+                <div class="col-span-5">Name</div>
+                <div class="col-span-3">Title ID</div>
+                <div class="col-span-1 text-center">Version</div>
+                <div class="col-span-1 text-right">Size</div>
+                <div class="col-span-2 text-right">Action</div>
+            </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="game-list">
-            <!-- Game items sẽ tự động hiện ở đây -->
+        <!-- List Content -->
+        <div id="game-list" class="divide-y divide-slate-800/50">
+            <!-- Rows tự động fill ở đây -->
         </div>
     </div>
 
     <script>
         let allGames = [];
 
-        // Hàm fetch dữ liệu từ file games.json
         async function loadGames() {
             try {
                 const response = await fetch('games.json');
                 allGames = await response.json();
                 renderGames(allGames);
-                document.getElementById('game-count').innerText = `Total: ${allGames.length} games in vault`;
+                document.getElementById('game-count').innerText = `${allGames.length} object(s)`;
             } catch (error) {
-                console.error("Lỗi load file JSON:", error);
-                document.getElementById('game-list').innerHTML = "<p class='text-red-400'>Không thể load danh sách game. Kiểm tra file games.json!</p>";
+                document.getElementById('game-list').innerHTML = "<p class='p-4 text-red-400'>Error: games.json not found.</p>";
             }
         }
 
-        // Hàm vẽ giao diện
         function renderGames(games) {
             const container = document.getElementById('game-list');
+            if (games.length === 0) {
+                container.innerHTML = "<p class='p-10 text-center text-slate-600'>No items match your search.</p>";
+                return;
+            }
+
             container.innerHTML = games.map(game => `
-                <div class="bg-slate-800/50 p-5 rounded-xl border border-slate-700 shadow-sm flex flex-col justify-between hover:border-sky-500 transition-all">
-                    <div>
-                        <h3 class="text-lg font-bold text-sky-400 truncate mb-3" title="${game.name}">${game.name}</h3>
-                        <div class="space-y-1.5 text-sm">
-                            <div class="flex justify-between"><span class="text-slate-500">ID:</span><span class="font-mono text-slate-300">${game.id}</span></div>
-                            <div class="flex justify-between"><span class="text-slate-500">Version:</span><span class="text-slate-300">${game.version}</span></div>
-                            <div class="flex justify-between"><span class="text-slate-500">Size:</span><span class="text-slate-300">${game.size}</span></div>
-                        </div>
+                <div class="row-hover grid grid-cols-1 md:grid-cols-12 gap-2 px-4 py-3 md:py-2 items-center text-sm transition-colors">
+                    <!-- Name & Icon -->
+                    <div class="col-span-1 md:col-span-5 flex items-center gap-3">
+                        <span class="text-lg">📄</span>
+                        <span class="font-medium text-slate-200 truncate" title="${game.name}">${game.name}</span>
                     </div>
-                    <a href="${game.link}" target="_blank" class="mt-5 block text-center bg-slate-700 hover:bg-sky-600 text-white font-medium py-2 rounded-lg transition-colors">Download</a>
+                    
+                    <!-- ID (Mobile hides label) -->
+                    <div class="col-span-1 md:col-span-3 flex md:block justify-between">
+                        <span class="md:hidden text-slate-500 text-xs">ID:</span>
+                        <span class="text-slate-400 font-mono text-xs">${game.id}</span>
+                    </div>
+
+                    <!-- Version -->
+                    <div class="col-span-1 md:col-span-1 flex md:block justify-between md:text-center">
+                        <span class="md:hidden text-slate-500 text-xs">Version:</span>
+                        <span class="text-slate-400">${game.version}</span>
+                    </div>
+
+                    <!-- Size -->
+                    <div class="col-span-1 md:col-span-1 flex md:block justify-between md:text-right">
+                        <span class="md:hidden text-slate-500 text-xs">Size:</span>
+                        <span class="text-slate-400">${game.size}</span>
+                    </div>
+
+                    <!-- Download Button -->
+                    <div class="col-span-1 md:col-span-2 text-right mt-2 md:mt-0">
+                        <a href="${game.link}" target="_blank" 
+                           class="inline-block bg-slate-700 hover:bg-sky-600 text-slate-100 px-4 py-1 rounded text-xs font-bold transition-colors shadow-sm">
+                           Download
+                        </a>
+                    </div>
                 </div>
             `).join('');
         }
 
-        // Logic search
+        // Filter Logic
         document.getElementById('search').addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase();
             const filtered = allGames.filter(g => 
                 g.name.toLowerCase().includes(term) || g.id.toLowerCase().includes(term)
             );
             renderGames(filtered);
+            document.getElementById('game-count').innerText = `${filtered.length} object(s) found`;
         });
 
         loadGames();
