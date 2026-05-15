@@ -5,7 +5,7 @@ let allGames = [];
 async function initApp() {
     try {
         const response = await fetch('games.json');
-        if (!response.ok) throw new Error('Không thể tải file games.json');
+        if (!response.ok) throw new Error('Unable to load games.json');
         
         allGames = await response.json();
         
@@ -15,7 +15,7 @@ async function initApp() {
         // Hiển thị dữ liệu lần đầu
         updateView();
     } catch (error) {
-        document.getElementById('game-list').innerHTML = `<p style="color:red;">Lỗi: ${error.message}</p>`;
+        document.getElementById('game-list').innerHTML = `<p style="color:red;">Error: ${error.message}</p>`;
     }
 }
 
@@ -60,7 +60,7 @@ function renderGames(games) {
     countDisplay.innerText = games.length;
 
     if (games.length === 0) {
-        container.innerHTML = "<p>Không tìm thấy game nào phù hợp.</p>";
+        container.innerHTML = "<p>No result.</p>";
         return;
     }
 
@@ -69,7 +69,7 @@ function renderGames(games) {
         <div class="game-item">
             <h3>📄 ${game.name}</h3>
             <p><strong>ID:</strong> ${game.id} | <strong>Size:</strong> ${game.size} | <strong>Version:</strong> ${game.version}</p>
-            <a href="${game.link}" class="game-link" target="_blank">Tải về máy</a>
+            <a href="${game.link}" class="game-link" target="_blank">Get link</a>
         </div>
     `).join('');
 }
