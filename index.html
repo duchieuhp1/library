@@ -5,7 +5,8 @@
     <title>Game Library</title>
     <style>
         body { font-family: sans-serif; padding: 20px; background-color: #f9f9f9; }
-        .toolbar { margin-bottom: 20px; padding: 10px; background: #fff; border-radius: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .toolbar { margin-bottom: 20px; padding: 15px; background: #fff; border-radius: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+        .search-box { padding: 5px 10px; font-size: 14px; width: 250px; border: 1px solid #ccc; border-radius: 4px; }
         .game-item { border: 1px solid #ddd; padding: 15px; margin-bottom: 10px; border-radius: 5px; background: #fff; }
         .game-item h3 { margin: 0 0 10px 0; font-size: 18px; }
         .game-item p { margin: 5px 0; color: #555; }
@@ -16,22 +17,29 @@
 <body>
 
     <div class="toolbar">
-        <strong>Tổng số:</strong> <span id="game-count">0 object(s)</span>
-        <span style="margin-left: 20px;">
+        <div>
+            <strong>Tổng số:</strong> <span id="game-count">0 object(s)</span>
+        </div>
+        
+        <div>
+            <label for="search-input">🔍 Tìm kiếm:</label>
+            <input type="text" id="search-input" class="search-box" placeholder="Nhập tên game hoặc ID..." oninput="updateView()">
+        </div>
+
+        <div>
             <label for="sort-select">Sắp xếp theo:</label>
-            <select id="sort-select" onchange="handleSort()">
+            <select id="sort-select" onchange="updateView()">
                 <option value="default">Mặc định (Theo JSON)</option>
                 <option value="name-asc">Tên (A - Z)</option>
                 <option value="name-desc">Tên (Z - A)</option>
                 <option value="id-asc">Mã Game ID</option>
             </select>
-        </span>
+        </div>
     </div>
 
     <div id="game-list">Đang tải dữ liệu...</div>
 
     <script>
-        // Biến toàn cục để lưu trữ dữ liệu gốc, giúp việc sắp xếp không phải gọi lại fetch()
         let allGames = []; 
 
         async function loadGames() {
@@ -39,43 +47,48 @@
                 const response = await fetch('games.json');
                 allGames = await response.json();
                 
-                // Cập nhật số lượng game
-                document.getElementById('game-count').innerText = `${allGames.length} object(s)`;
-                
-                // Gọi hàm render để in ra màn hình
-                renderGames(allGames);
+                // Hiển thị lần đầu tiên
+                updateView();
             } catch (error) {
                 document.getElementById('game-list').innerHTML = "<p style='color:red;'>Error: games.json not found.</p>";
             }
         }
 
-        // Hàm xử lý khi người dùng chọn sắp xếp
-        function handleSort() {
+        // Hàm xử lý chung cho cả Tìm kiếm và Sắp xếp
+        function updateView() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
             const sortType = document.getElementById('sort-select').value;
-            let sortedGames = [...allGames]; // Tạo bản sao để không làm hỏng mảng gốc
             
+            // 1. Xử lý Tìm kiếm (Lọc theo tên hoặc ID)
+            let processedGames = allGames.filter(game => 
+                game.name.toLowerCase().includes(searchTerm) || 
+                game.id.toLowerCase().includes(searchTerm)
+            );
+
+            // 2. Xử lý Sắp xếp trên danh sách đã lọc
             if (sortType === 'name-asc') {
-                sortedGames.sort((a, b) => a.name.localeCompare(b.name));
+                processedGames.sort((a, b) => a.name.localeCompare(b.name));
             } else if (sortType === 'name-desc') {
-                sortedGames.sort((a, b) => b.name.localeCompare(a.name));
+                processedGames.sort((a, b) => b.name.localeCompare(a.name));
             } else if (sortType === 'id-asc') {
-                sortedGames.sort((a, b) => a.id.localeCompare(b.id));
+                processedGames.sort((a, b) => a.id.localeCompare(b.id));
             }
+
+            // Cập nhật lại tổng số sau khi lọc
+            document.getElementById('game-count').innerText = `${processedGames.length} object(s)`;
             
-            // Nếu chọn 'default' thì render mảng gốc, ngược lại render mảng đã sắp xếp
-            renderGames(sortType === 'default' ? allGames : sortedGames);
+            // Render kết quả
+            renderGames(processedGames);
         }
 
-        // Hàm vẽ HTML ra màn hình (Đã fix lỗi map và thêm .join(''))
         function renderGames(games) {
             const container = document.getElementById('game-list');
             
             if (games.length === 0) {
-                container.innerHTML = "No items match your search.";
+                container.innerHTML = "<p>Không tìm thấy game nào phù hợp.</p>";
                 return;
             }
 
-            // Render thông tin tên (game.name), dung lượng (game.size) và các trường khác
             container.innerHTML = games.map(game => `
                 <div class="game-item">
                     <h3>📄 ${game.name}</h3>
