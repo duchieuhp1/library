@@ -1,5 +1,4 @@
 /* script.js */
-/* script.js */
 let allGames = [];
 
 // 1. Khởi tạo và tải dữ liệu từ games.json
