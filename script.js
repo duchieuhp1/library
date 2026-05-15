@@ -42,25 +42,30 @@ function updateView() {
     renderGames(processedGames);
 }
 
-// 4. Hiển thị (Render) - Sử dụng .join('') để tăng hiệu suất [cite: 68]
+// 4. Hàm hiển thị (Render) kết quả ra DOM
 function renderGames(games) {
     const container = document.getElementById('game-list');
-    document.getElementById('game-count').innerText = games.length;
+    const countDisplay = document.getElementById('game-count');
+    
+    countDisplay.innerText = games.length;
 
     if (games.length === 0) {
-        container.innerHTML = "<p>Không tìm thấy kết quả nào.</p>";
+        container.innerHTML = "<p>No result.</p>";
         return;
     }
-
+    
     container.innerHTML = games.map(game => `
         <div class="game-item">
-            <h3>📄 ${game.name}</h3>
-            <p>
-                <strong>ID:</strong> <code>${game.id}</code> 
-                <button class="copy-btn" onclick="copyToClipboard('${game.id}', this)">Copy ID</button>
-                | <strong>Size:</strong> ${game.size} | <strong>Version:</strong> ${game.version}
-            </p>
-            <a href="${game.link}" class="game-link" target="_blank">Get link</a>
+            <img src="${game.thumbnail || 'https://via.placeholder.com/80?text=No+Img'}" class="game-thumbnail" alt="${game.name}">
+            <div class="game-info">
+                <h3>${game.name}</h3>
+                <p>
+                    <strong>ID:</strong> <code>${game.id}</code>
+                    <button class="copy-btn" onclick="copyToClipboard('${game.id}', this)">Copy ID</button>
+                    | <strong>Size:</strong> ${game.size} | <strong>Version:</strong> ${game.version}
+                </p>
+                <a href="${game.link}" class="game-link" target="_blank">Get link</a>
+            </div>
         </div>
     `).join('');
 }
