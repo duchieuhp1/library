@@ -1,38 +1,36 @@
 /* script.js */
 let allGames = [];
 
-// 1. Khởi tạo ứng dụng
+// 1. Khởi tạo và tải dữ liệu
 async function initApp() {
     try {
         const response = await fetch('games.json');
-        if (!response.ok) throw new Error('Unable to load games.json');
+        if (!response.ok) throw new Error('Không thể tải file games.json');
         allGames = await response.json();
         
         setupListeners();
         updateView();
     } catch (error) {
-        document.getElementById('game-list').innerHTML = `<p style="color:red;">Error: ${error.message}</p>`;
+        document.getElementById('game-list').innerHTML = `<p style="color:red;">Lỗi: ${error.message}</p>`;
     }
 }
 
-// 2. Thiết lập lắng nghe sự kiện
+// 2. Lắng nghe sự kiện (Search & Sort)
 function setupListeners() {
     document.getElementById('search-input').addEventListener('input', updateView);
     document.getElementById('sort-select').addEventListener('change', updateView);
 }
 
-// 3. Logic xử lý: Tìm kiếm + Sắp xếp
+// 3. Xử lý Logic: Lọc + Sắp xếp
 function updateView() {
     const searchTerm = document.getElementById('search-input').value.toLowerCase();
     const sortType = document.getElementById('sort-select').value;
 
-    // Lọc theo tên hoặc ID
     let processedGames = allGames.filter(game => 
         game.name.toLowerCase().includes(searchTerm) || 
         game.id.toLowerCase().includes(searchTerm)
     );
 
-    // Sắp xếp
     if (sortType === 'name-asc') {
         processedGames.sort((a, b) => a.name.localeCompare(b.name));
     } else if (sortType === 'name-desc') {
@@ -44,13 +42,13 @@ function updateView() {
     renderGames(processedGames);
 }
 
-// 4. Hiển thị dữ liệu kèm nút Copy ID
+// 4. Hiển thị (Render) - Sử dụng .join('') để tăng hiệu suất [cite: 68]
 function renderGames(games) {
     const container = document.getElementById('game-list');
     document.getElementById('game-count').innerText = games.length;
 
     if (games.length === 0) {
-        container.innerHTML = "<p>No results found.</p>";
+        container.innerHTML = "<p>Không tìm thấy kết quả nào.</p>";
         return;
     }
 
@@ -58,7 +56,7 @@ function renderGames(games) {
         <div class="game-item">
             <h3>📄 ${game.name}</h3>
             <p>
-                <strong>ID:</strong> ${game.id} 
+                <strong>ID:</strong> <code>${game.id}</code> 
                 <button class="copy-btn" onclick="copyToClipboard('${game.id}', this)">Copy ID</button>
                 | <strong>Size:</strong> ${game.size} | <strong>Version:</strong> ${game.version}
             </p>
@@ -67,20 +65,20 @@ function renderGames(games) {
     `).join('');
 }
 
-// 5. Hàm xử lý Copy ID vào Clipboard
-function copyToClipboard(text, button) {
+// 5. Quan trọng: Đưa hàm Copy ra ngoài phạm vi toàn cục để HTML gọi được
+window.copyToClipboard = function(text, button) {
     navigator.clipboard.writeText(text).then(() => {
         const originalText = button.innerText;
         button.innerText = "✅ Copied!";
-        button.classList.add('success');
-
+        button.style.backgroundColor = "#2ecc71"; // Đổi màu xanh lá khi thành công [cite: 77]
+        
         setTimeout(() => {
             button.innerText = originalText;
-            button.classList.remove('success');
+            button.style.backgroundColor = ""; // Trả lại màu cũ
         }, 1500);
     }).catch(err => {
-        console.error('Copy failed: ', err);
+        console.error('Lỗi khi copy: ', err);
     });
-}
+};
 
 initApp();
