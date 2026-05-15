@@ -1,3 +1,57 @@
+/* style.css */
+body { 
+    font-family: sans-serif; 
+    padding: 20px; 
+    background-color: #f9f9f9; 
+}
+
+.toolbar { 
+    margin-bottom: 20px; 
+    padding: 15px; 
+    background: #fff; 
+    border-radius: 5px; 
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1); 
+    display: flex; 
+    align-items: center; 
+    gap: 20px; 
+    flex-wrap: wrap; 
+}
+
+.search-box { 
+    padding: 5px 10px; 
+    font-size: 14px; 
+    width: 250px; 
+    border: 1px solid #ccc; 
+    border-radius: 4px; 
+}
+
+.game-item { 
+    border: 1px solid #ddd; 
+    padding: 15px; 
+    margin-bottom: 10px; 
+    border-radius: 5px; 
+    background: #fff; 
+}
+
+.game-item h3 { 
+    margin: 0 0 10px 0; 
+    font-size: 18px; 
+}
+
+.game-item p { 
+    margin: 5px 0; 
+    color: #555; 
+}
+
+.game-link { 
+    color: #0066cc; 
+    text-decoration: none; 
+    font-weight: bold; 
+}
+
+.game-link:hover { 
+    text-decoration: underline; 
+}
 /* Thêm vào cuối file style.css */
 .copy-btn {
     margin-left: 10px;
