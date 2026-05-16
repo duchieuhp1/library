@@ -16,7 +16,7 @@
     "thumbnail": "https://tinfoil.media/ti/010092A0172E4000/0/0/"
   },
   {
-    "name": "The Legend of Zelda: Tears of the Kingdom",
+    "name": "The Legend of Zelda™: Tears of the Kingdom",
     "id": "0100F2C0115B6000",
     "version": "NSP",
     "size": "17.6 GB",
@@ -24,7 +24,7 @@
     "thumbnail": "https://tinfoil.media/ti/0100F2C0115B6000/0/0/"
   },
   {
-    "name": "Mario Kart 8 Deluxe",
+    "name": "Mario Kart™ 8 Deluxe",
     "id": "0100152000022000",
     "version": "NSP",
     "size": "12 GB",
@@ -36,10 +36,11 @@
     "id": "0100CD801CE5E000",
     "version": "NSP",
     "size": "151 MB",
-    "link": "https://drive.google.com/file/d/1NgEO9TAP91G5a11d7G8TsRVx7S-v9bp-/view?usp=drive_link"
+    "link": "https://drive.google.com/file/d/1NgEO9TAP91G5a11d7G8TsRVx7S-v9bp-/view?usp=drive_link",
+    "thumbnail": "https://tinfoil.media/ti/0100CD801CE5E000/0/0/"
   },
   {
-    "name": "Bayonetta Origins: Cereza and the Lost Demon",
+    "name": "Bayonetta™ Origins: Cereza and the Lost Demon",
     "id": "0100CF5010FEC000",
     "version": "NSP",
     "size": "3.4 GB",
@@ -59,52 +60,58 @@
     "id": "0100B1600E9AE000",
     "version": "NSP",
     "size": "578 MB",
-    "link": "https://drive.google.com/file/d/1xs_DqWqM_A9pmd1t-xHzWhI0HU_Ts3Zx/view?usp=drive_link"
+    "link": "https://drive.google.com/file/d/1xs_DqWqM_A9pmd1t-xHzWhI0HU_Ts3Zx/view?usp=drive_link",
+    "thumbnail": "https://tinfoil.media/ti/0100B1600E9AE000/0/0/"
   },
   {
     "name": "Celeste",
     "id": "01002B30028F6000",
     "version": "NSP",
     "size": "1.6 GB",
-    "link": "https://drive.google.com/file/d/1L4KjoVCksi9nAUmy0MygYHcbvFJ473lF/view?usp=drive_link"
+    "link": "https://drive.google.com/file/d/1L4KjoVCksi9nAUmy0MygYHcbvFJ473lF/view?usp=drive_link",
+    "thumbnail": "https://tinfoil.media/ti/01002B30028F6000/0/0/"
   },
   {
     "name": "Dark Soul™ Remastered",
     "id": "01004AB00A260000",
     "version": "NSP",
     "size": "4.2 GB",
-    "link": "https://drive.google.com/file/d/1s0HKt88JUKBRI6a8UD4TGgLDqsPCyp4w/view?usp=drive_link"
+    "link": "https://drive.google.com/file/d/1s0HKt88JUKBRI6a8UD4TGgLDqsPCyp4w/view?usp=drive_link",
+    "thumbnail": "https://tinfoil.media/ti/01004AB00A260000/0/0/"
   },
   {
     "name": "Dave The Diver",
     "id": "010097F018538000",
     "version": "NSP",
     "size": "4.6 GB",
-    "link": "https://drive.google.com/file/d/1_aervJ_CliLAn2PPEvELcFvqJ7zkisxl/view?usp=drive_link"
+    "link": "https://drive.google.com/file/d/1_aervJ_CliLAn2PPEvELcFvqJ7zkisxl/view?usp=drive_link",
+    "thumbnail": "https://tinfoil.media/ti/010097F018538000/0/0/"
   },
   {
     "name": "Dead Cells",
     "id": "0100646009FBE000",
     "version": "NSP",
     "size": "2.5 GB",
-    "link": "https://drive.google.com/file/d/1PsrBpUsOWT_0w15xmUIqSt3EDw8FwYCy/view?usp=drive_link"
+    "link": "https://drive.google.com/file/d/1PsrBpUsOWT_0w15xmUIqSt3EDw8FwYCy/view?usp=drive_link",
+    "thumbnail": "https://tinfoil.media/ti/0100646009FBE000/0/0/"
   },
   {
-    "name": "Ender Lilies - Quietus of the Knights",
+    "name": "ENDER LILIES: Quietus of the Knights",
     "id": "0100CCF012E9A000",
     "version": "NSP",
     "size": "2.0 GB",
-    "link": "https://drive.google.com/file/d/1NH-jNjRMTevkEWfiSYp3gNvs3GftLfHv/view?usp=drive_link"
+    "link": "https://drive.google.com/file/d/1NH-jNjRMTevkEWfiSYp3gNvs3GftLfHv/view?usp=drive_link",
+    "thumbnail": "https://tinfoil.media/ti/0100CCF012E9A000/0/0/"
   },
   {
-    "name": "Ender Magnolia - Bloom in the Mist",
+    "name": "ENDER MAGNOLIA: Bloom in the Mist",
     "id": "0100EF901E552800",
     "version": "NSP",
     "size": "3.8 GB",
     "link": "https://drive.google.com/file/d/1T3x_MNjEru6vVjB6oJrGseGs-WW1q76z/view?usp=drive_link"
   },
   {
-    "name": "FINAL FANTASY TACTICS - The Ivalice Chronicles",
+    "name": "FINAL FANTASY™ TACTICS - The Ivalice Chronicles",
     "id": "010038B015560000",
     "version": "NSP",
     "size": "7.2 GB",
@@ -139,14 +146,14 @@
     "link": "https://drive.google.com/file/d/1lOD7eKcClKh8IrRCjpEZJcsYH3lnw8_T/view?usp=drive_link"
   },
   {
-    "name": "Kirby and the Forgotten Land",
+    "name": "Kirby™ and the Forgotten Land",
     "id": "01004D300C5AE000",
     "version": "NSP",
     "size": "6.0 GB",
     "link": "https://drive.google.com/file/d/11k1oqF_zf8qehRBRm0ZOAlCyGa1jEv6R/view?usp=drive_link"
   },
   {
-    "name": "Metroid Dread",
+    "name": "Metroid™ Dread",
     "id": "010093801237C000",
     "version": "NSP",
     "size": "4.4 GB",
@@ -181,35 +188,35 @@
     "link": "https://drive.google.com/file/d/1MkWX-N9PlSpmdi_BURV6P1uU7RH5EzIn/view?usp=drive_link"
   },
   {
-    "name": "Paper Mario: The Thousand-Year Door",
+    "name": "Paper Mario™: The Thousand-Year Door",
     "id": "0100ECD018EBE000",
     "version": "NSP",
     "size": "5.4 GB",
     "link": "https://drive.google.com/file/d/1bagcjXDZZKdoAfL2PiGNv9_LILjj97X9/view?usp=drive_link"
   },
   {
-    "name": "Pikmin 1",
+    "name": "Pikmin™ 1",
     "id": "0100AA80194B0000",
     "version": "NSP",
     "size": "1.2 GB",
     "link": "https://drive.google.com/file/d/1f91zB6gttATCDVJOsTnDDVCWNwxJU2rZ/view?usp=drive_link"
   },
   {
-    "name": "Pikmin 2",
+    "name": "Pikmin™ 2",
     "id": "0100D680194B2000",
     "version": "NSP",
     "size": "1.2 GB",
     "link": "https://drive.google.com/file/d/1QdlwEPn8E6KhaiW2qfPpl92k_Yibahqj/view?usp=drive_link"
   },
   {
-    "name": "Pikmin 3 [Deluxe]",
+    "name": "Pikmin™ 3 [Deluxe]",
     "id": "0100F4C009322000",
     "version": "NSP",
     "size": "7.1 GB",
     "link": "https://drive.google.com/file/d/1IlGlkt_CaLycAoDREcqo1XMsejjaLzFb/view?usp=drive_link"
   },
   {
-    "name": "Pikmin 4",
+    "name": "Pikmin™ 4",
     "id": "0100B7C00933A000",
     "version": "NSP",
     "size": "12.1 GB",
@@ -237,28 +244,28 @@
     "link": "https://drive.google.com/file/d/1WSDIlGzZqzcFZHjHuM5cOVPs8KnIomC0/view?usp=drive_link"
   },
   {
-    "name": "Super Mario 3D World + Bowser's Fury",
+    "name": "Super Mario™ 3D World + Bowser's Fury",
     "id": "010028600EBDA000",
     "version": "NSP",
     "size": "3.2 GB",
     "link": "https://drive.google.com/file/d/1OPp8PqnQT19qHWtCL8ZKI4uQnUc_MVLP/view?usp=drive_link"
   },
   {
-    "name": "Super Mario Bros. Wonder",
+    "name": "Super Mario Bros.™ Wonder",
     "id": "010015100B514800",
     "version": "NSP",
     "size": "3.8 GB",
     "link": "https://drive.google.com/file/d/1_os0G-mirW66bHvV5r3ZVcYF8HleGlZH/view?usp=drive_link"
   },
   {
-    "name": "Super Mario Galaxy [1+2]",
+    "name": "Super Mario™ Galaxy [1+2]",
     "id": "010099C022B96800",
     "version": "NSP",
     "size": "6.8 GB",
     "link": "https://drive.google.com/file/d/1cMEkRxMyMcMza7IGNP5kc08JQLBL_uD1/view?usp=drive_link"
   },
   {
-    "name": "Super Mario Odyssey",
+    "name": "Super Mario™ Odyssey",
     "id": "0100000000010000",
     "version": "NSP",
     "size": "6.0 GB",
@@ -300,7 +307,7 @@
     "link": "https://drive.google.com/file/d/1XrnO1zvQt7XzJJWLwsEHrarF_ti3S-23/view?usp=drive_link"
   },
   {
-    "name": "Xenoblade Chronicles 3",
+    "name": "Xenoblade Chronicles™ 3",
     "id": "010074F013262000",
     "version": "NSP",
     "size": "20 GB",
