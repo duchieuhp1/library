@@ -32,35 +32,28 @@
     resultDiv.innerHTML = "⏳ Đang tải dữ liệu ảnh bìa chuẩn, vui lòng đợi...";
 
     try {
-        // Dùng AllOrigins để bypass CORS lấy HTML từ Tinfoil
         const targetUrl = `https://tinfoil.io/Title/${id}`;
         const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`;
         
         const response = await fetch(proxyUrl);
         const data = await response.json();
         
-        // Parse HTML từ kết quả trả về
         const parser = new DOMParser();
         const doc = parser.parseFromString(data.contents, 'text/html');
         
-        // 1. Trích xuất Tên Game
         const titleTag = doc.querySelector('title');
         let name = titleTag ? titleTag.innerText.replace(' - Tinfoil', '').trim() : 'Unknown Game';
         if (name === 'Unknown Game' || name === 'Tinfoil') {
             name = "Không tìm thấy tên (Nhập tay)";
         }
-        
-        // 2. Trích xuất Thumbnail (Giải pháp 2 lớp kiên cố)
-        // Lớp 1: Ép link mặc định của server ảnh Tinfoil (Đúng 95% trường hợp)
+
         let thumbnail = `https://tinfoil.io/images/${id}.jpg`; 
         
-        // Lớp 2: Kiểm tra thẻ Meta chuẩn SEO để lấy ảnh chất lượng cao nhất nếu có
         const metaImg = doc.querySelector('meta[property="og:image"]');
         if (metaImg && metaImg.content && !metaImg.content.includes('logo')) {
             thumbnail = metaImg.content;
         }
 
-        // Format lại JSON để copy
         const finalJson = {
             name: name,
             id: id,
