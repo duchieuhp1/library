@@ -28,7 +28,8 @@
     "id": "0100152000022000",
     "version": "NSP",
     "size": "12 GB",
-    "link": "https://drive.google.com/drive/folders/1cvaM0ni_vksXE9WYpDGq6VhQaI3NvV_j?usp=drive_link"
+    "link": "https://drive.google.com/drive/folders/1cvaM0ni_vksXE9WYpDGq6VhQaI3NvV_j?usp=drive_link",
+    "thumbnail": "https://tinfoil.media/ti/0100152000022000/0/0/"
   },
   {
     "name": "Balatro",
@@ -42,14 +43,16 @@
     "id": "0100CF5010FEC000",
     "version": "NSP",
     "size": "3.4 GB",
-    "link": "https://drive.google.com/file/d/1VmYkMQSINMCIiPA9XxStwVXCjkLT4bXT/view?usp=drive_link"
+    "link": "https://drive.google.com/file/d/1VmYkMQSINMCIiPA9XxStwVXCjkLT4bXT/view?usp=drive_link",
+    "thumbnail": "https://tinfoil.media/ti/0100CF5010FEC000/0/0/"
   },
   {
     "name": "Blasphemous 2",
     "id": "010040801A4C8000",
     "version": "NSP",
     "size": "2.7 GB",
-    "link": "https://drive.google.com/file/d/1adJnaGrnx1BknAvCDHQEBCqJP-X1jgCO/view?usp=drive_link"
+    "link": "https://drive.google.com/file/d/1adJnaGrnx1BknAvCDHQEBCqJP-X1jgCO/view?usp=drive_link",
+    "thumbnail": "https://tinfoil.media/ti/010040801A4C8000/0/0/"
   },
   {
     "name": "Carrion",
