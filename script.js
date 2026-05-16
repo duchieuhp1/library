@@ -1,7 +1,5 @@
-/* script.js */
 let allGames = [];
 
-// 1. Khởi tạo và tải dữ liệu
 async function initApp() {
     try {
         const response = await fetch('games.json');
@@ -15,13 +13,11 @@ async function initApp() {
     }
 }
 
-// 2. Lắng nghe sự kiện (Search & Sort)
 function setupListeners() {
     document.getElementById('search-input').addEventListener('input', updateView);
     document.getElementById('sort-select').addEventListener('change', updateView);
 }
 
-// 3. Xử lý Logic: Lọc + Sắp xếp
 function updateView() {
     const searchTerm = document.getElementById('search-input').value.toLowerCase();
     const sortType = document.getElementById('sort-select').value;
@@ -42,7 +38,6 @@ function updateView() {
     renderGames(processedGames);
 }
 
-// 4. Hàm hiển thị (Render) kết quả ra DOM
 function renderGames(games) {
     const container = document.getElementById('game-list');
     const countDisplay = document.getElementById('game-count');
@@ -70,16 +65,15 @@ function renderGames(games) {
     `).join('');
 }
 
-// 5. Quan trọng: Đưa hàm Copy ra ngoài phạm vi toàn cục để HTML gọi được
 window.copyToClipboard = function(text, button) {
     navigator.clipboard.writeText(text).then(() => {
         const originalText = button.innerText;
         button.innerText = "✅ Copied!";
-        button.style.backgroundColor = "#2ecc71"; // Đổi màu xanh lá khi thành công [cite: 77]
+        button.style.backgroundColor = "#2ecc71"; 
         
         setTimeout(() => {
             button.innerText = originalText;
-            button.style.backgroundColor = ""; // Trả lại màu cũ
+            button.style.backgroundColor = ""; 
         }, 1500);
     }).catch(err => {
         console.error('Lỗi khi copy: ', err);
