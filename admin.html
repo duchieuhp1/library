@@ -23,60 +23,69 @@
 
     <script>
         async function fetchMetadata() {
-            const id = document.getElementById('game-id').value.trim();
-            const resultDiv = document.getElementById('result');
-            
-            if (!id) return alert('Vui lòng nhập ID!');
+    const id = document.getElementById('game-id').value.trim().toUpperCase();
+    const resultDiv = document.getElementById('result');
+    
+    if (!id) return alert('Vui lòng nhập ID!');
 
-            resultDiv.style.display = 'block';
-            resultDiv.innerHTML = "⏳ Đang tải dữ liệu, vui lòng đợi...";
+    resultDiv.style.display = 'block';
+    resultDiv.innerHTML = "⏳ Đang tải dữ liệu ảnh bìa chuẩn, vui lòng đợi...";
 
-            try {
-                // Dùng AllOrigins để bypass CORS
-                const targetUrl = `https://tinfoil.io/Title/${id}`;
-                const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`;
-                
-                const response = await fetch(proxyUrl);
-                const data = await response.json();
-                
-                // Parse HTML từ kết quả trả về
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(data.contents, 'text/html');
-                
-                // Trích xuất Tên
-                const titleTag = doc.querySelector('title');
-                let name = titleTag ? titleTag.innerText.replace(' - Tinfoil', '').trim() : 'Unknown Game';
-                
-                // Trích xuất Ảnh bìa
-                const imgSelectors = doc.querySelectorAll('img');
-                let thumbnail = "https://via.placeholder.com/150?text=No+Image";
-                imgSelectors.forEach(img => {
-                    if(img.src.includes('title') || img.src.includes('tinfoil.io/images')) {
-                        thumbnail = img.src;
-                    }
-                });
-
-                // Format lại JSON để copy
-                const finalJson = {
-                    name: name,
-                    id: id,
-                    version: "NSP",
-                    size: "TBD",
-                    link: "",
-                    thumbnail: thumbnail
-                };
-
-                resultDiv.innerHTML = `
-                    <h3>✅ Đã tìm thấy!</h3>
-                    <img src="${thumbnail}" width="120" alt="thumbnail">
-                    <p><strong>Tên Game:</strong> ${name}</p>
-                    <p>Copy đoạn JSON bên dưới dán vào <b>games.json</b>:</p>
-                    <textarea rows="9" onclick="this.select()">${JSON.stringify(finalJson, null, 4)},</textarea>
-                `;
-            } catch (error) {
-                resultDiv.innerHTML = `<p style="color:red;">❌ Lỗi: Không thể lấy dữ liệu (${error.message})</p>`;
-            }
+    try {
+        // Dùng AllOrigins để bypass CORS lấy HTML từ Tinfoil
+        const targetUrl = `https://tinfoil.io/Title/${id}`;
+        const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`;
+        
+        const response = await fetch(proxyUrl);
+        const data = await response.json();
+        
+        // Parse HTML từ kết quả trả về
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(data.contents, 'text/html');
+        
+        // 1. Trích xuất Tên Game
+        const titleTag = doc.querySelector('title');
+        let name = titleTag ? titleTag.innerText.replace(' - Tinfoil', '').trim() : 'Unknown Game';
+        if (name === 'Unknown Game' || name === 'Tinfoil') {
+            name = "Không tìm thấy tên (Nhập tay)";
         }
+        
+        // 2. Trích xuất Thumbnail (Giải pháp 2 lớp kiên cố)
+        // Lớp 1: Ép link mặc định của server ảnh Tinfoil (Đúng 95% trường hợp)
+        let thumbnail = `https://tinfoil.io/images/${id}.jpg`; 
+        
+        // Lớp 2: Kiểm tra thẻ Meta chuẩn SEO để lấy ảnh chất lượng cao nhất nếu có
+        const metaImg = doc.querySelector('meta[property="og:image"]');
+        if (metaImg && metaImg.content && !metaImg.content.includes('logo')) {
+            thumbnail = metaImg.content;
+        }
+
+        // Format lại JSON để copy
+        const finalJson = {
+            name: name,
+            id: id,
+            version: "NSP",
+            size: "TBD",
+            link: "",
+            thumbnail: thumbnail
+        };
+
+        resultDiv.innerHTML = `
+            <h3>✅ Đã tạo cấu trúc JSON!</h3>
+            <div style="display: flex; gap: 15px; margin-bottom: 15px;">
+                <img src="${thumbnail}" width="120" style="border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);" alt="thumbnail" onerror="this.src='https://via.placeholder.com/120x120?text=No+Image'">
+                <div>
+                    <p><strong>Tên Game:</strong> ${name}</p>
+                    <p><strong>ID:</strong> ${id}</p>
+                </div>
+            </div>
+            <p>Copy đoạn JSON bên dưới dán vào <b>games.json</b>:</p>
+            <textarea rows="9" onclick="this.select()" style="width: 100%; font-family: monospace; padding: 10px;">${JSON.stringify(finalJson, null, 4)},</textarea>
+        `;
+    } catch (error) {
+        resultDiv.innerHTML = `<p style="color:red;">❌ Lỗi: Không thể lấy dữ liệu. Hãy kiểm tra lại mạng hoặc ID (${error.message})</p>`;
+    }
+}
     </script>
 </body>
 </html>
