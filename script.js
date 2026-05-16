@@ -6,6 +6,15 @@ async function initApp() {
         if (!response.ok) throw new Error('Không thể tải file games.json');
         allGames = await response.json();
         
+        // MỚI: Sắp xếp mặc định dữ liệu gốc theo Tên (A-Z) ngay sau khi tải
+        allGames.sort((a, b) => a.name.localeCompare(b.name));
+
+        // MỚI: Đảm bảo giao diện thanh Dropdown hiển thị đúng tùy chọn name-asc
+        const sortSelect = document.getElementById('sort-select');
+        if (sortSelect) {
+            sortSelect.value = 'name-asc';
+        }
+
         setupListeners();
         updateView();
     } catch (error) {
@@ -27,6 +36,7 @@ function updateView() {
         game.id.toLowerCase().includes(searchTerm)
     );
 
+    // Xử lý sắp xếp theo lựa chọn hiện tại của người dùng
     if (sortType === 'name-asc') {
         processedGames.sort((a, b) => a.name.localeCompare(b.name));
     } else if (sortType === 'name-desc') {
