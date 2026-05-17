@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Auto Metadata Fetcher - Bản Nâng Cấp Chi Tiết</title>
+    <title>Auto Metadata Fetcher - Siêu Tốc API</title>
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; padding: 30px; max-width: 650px; margin: 0 auto; background: #f9f9fb; color: #333; }
         h2 { color: #e74c3c; margin-bottom: 5px; }
@@ -17,23 +17,23 @@
         textarea { width: 100%; margin-top: 12px; font-family: 'Courier New', Courier, monospace; padding: 12px; border: 1px solid #eee; background: #2d3748; color: #a0aec0; border-radius: 6px; resize: vertical; box-sizing: border-box; }
         .game-info-preview { display: flex; gap: 20px; margin-bottom: 15px; align-items: flex-start; background: #f8f9fa; padding: 15px; border-radius: 6px; }
         .game-details-text p { margin: 4px 0; font-size: 14px; color: #4a5568; }
-        .badge { display: inline-block; padding: 3px 8px; background: #e8f8f5; color: #1abc9c; border-radius: 4px; font-size: 12px; font-weight: bold; margin-top: 5px; }
+        .badge { display: inline-block; padding: 3px 8px; background: #edf2f7; color: #4a5568; border-radius: 4px; font-size: 12px; font-weight: bold; margin-top: 5px; }
     </style>
 </head>
 <body>
 
-    <h2>🛠️ Công cụ tra cứu Metadata Nâng Cao</h2>
-    <p class="description">Tự động quét: Tên, Ảnh bìa, Nhà phát hành (Publisher), Ngày ra mắt (Release Date), và Dung lượng (Size).</p>
+    <h2>🛠️ Công cụ tra cứu Metadata API</h2>
+    <p class="description">Phiên bản sửa lỗi: Sử dụng API danh mục trực tiếp để lấy Name, Publisher, Release Date, Size mà không lo bị chặn.</p>
     
     <div class="input-group">
         <input type="text" id="game-id" placeholder="Nhập ID game (VD: 0100A6301214E000)">
-        <button onclick="fetchAdvancedMetadata()">Tìm Kiếm</button>
+        <button onclick="fetchGameMetadata()">Tìm Kiếm</button>
     </div>
 
     <div id="result" class="result-box" style="display: none;"></div>
 
     <script>
-        async function fetchAdvancedMetadata() {
+        async function fetchGameMetadata() {
             const id = document.getElementById('game-id').value.trim().toUpperCase();
             const resultDiv = document.getElementById('result');
             
@@ -43,84 +43,55 @@
             }
 
             resultDiv.style.display = 'block';
-            resultDiv.innerHTML = `<div class="status-loading">⏳ Đang kết nối proxy và trích xuất dữ liệu chi tiết từ Tinfoil...</div>`;
+            resultDiv.innerHTML = `<div class="status-loading">⏳ Đang truy vấn luồng dữ liệu từ API Switch công cộng...</div>`;
 
-            // Cấu hình link ảnh trực tiếp từ CDN gốc
             const thumbnail = `https://tinfoil.media/ti/${id}/0/0/`;
             
-            // Khởi tạo các giá trị mặc định phòng trường hợp mạng lỗi
-            let name = "Không tìm thấy tên (Nhập tay)";
+            // Giá trị dự phòng chuẩn nếu không tìm thấy trong database API
+            let name = "Tên Game (Không tìm thấy, hãy nhập tay)";
             let publisher = "Unknown";
             let releaseDate = "Unknown";
             let size = "TBD";
 
             try {
-                const targetUrl = `https://tinfoil.io/Title/${id}`;
-                const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`;
+                // Sử dụng nguồn API dữ liệu Switch thô cực kỳ uy tín và không chặn CORS
+                const apiUrl = `https://raw.githubusercontent.com/blawar/titledb/master/US.en.json`;
                 
-                // Giới hạn thời gian chờ chống treo trang
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 6000);
-
-                const response = await fetch(proxyUrl, { signal: controller.signal });
-                clearTimeout(timeoutId);
-
+                const response = await fetch(apiUrl);
                 if (response.ok) {
-                    const data = await response.json();
-                    if (data && data.contents) {
-                        const parser = new DOMParser();
-                        const doc = parser.parseFromString(data.contents, 'text/html');
+                    const db = await response.json();
+                    
+                    // Kiểm tra xem ID có tồn tại trong cơ sở dữ liệu không
+                    if (db && db[id]) {
+                        const gameData = db[id];
+                        name = gameData.name || name;
+                        publisher = gameData.publisher || "Unknown";
                         
-                        // 1. Trích xuất Tên Game từ thẻ title
-                        const titleTag = doc.querySelector('title');
-                        if (titleTag && titleTag.innerText) {
-                            let fetchedName = titleTag.innerText.replace(' - Tinfoil', '').trim();
-                            if (fetchedName && fetchedName !== 'Tinfoil' && fetchedName !== 'Loading...') {
-                                name = fetchedName;
+                        // Định dạng lại ngày ra mắt nếu có (YYYYMMDD sang DD-MM-YYYY)
+                        if (gameData.releaseDate) {
+                            const dateStr = String(gameData.releaseDate);
+                            if (dateStr.length === 8) {
+                                releaseDate = `${dateStr.substring(4,6)}-${dateStr.substring(6,8)}-${dateStr.substring(0,4)}`;
+                            } else {
+                                releaseDate = dateStr;
                             }
                         }
-
-                        // 2. Trích xuất Publisher, Release Date, Size từ các hàng bảng dữ liệu trên web
-                        const rows = doc.querySelectorAll('.box .row, table tr, div'); 
-                        // Tinfoil sắp xếp thông tin theo các cặp text song song, ta sẽ duyệt qua mã HTML text để tìm bóc tách
-                        const fullText = doc.body.innerText;
-
-                        // Tìm Size bằng Regex
-                        const sizeMatch = fullText.match(/Size\s*:\s*([\d\.]+\s*(GB|MB))/i) || fullText.match(/([\d\.]+\s*(GB|MB))/);
-                        if (sizeMatch) size = sizeMatch[1];
-
-                        // Quét kỹ hơn trong cấu trúc các thẻ thông tin của Tinfoil
-                        const allElements = doc.querySelectorAll('*');
-                        allElements.forEach(el => {
-                            const text = el.innerText ? el.innerText.trim() : '';
-                            
-                            // Bóc tách Publisher
-                            if (text.startsWith('Publisher') && el.nextElementSibling) {
-                                publisher = el.nextElementSibling.innerText.trim();
-                            } else if (text.includes('Publisher:')) {
-                                publisher = text.replace('Publisher:', '').trim();
+                        
+                        // Tính toán dung lượng từ Bytes sang GB/MB cho trực quan
+                        if (gameData.size) {
+                            const bytes = parseInt(gameData.size);
+                            if (bytes >= 1073741824) {
+                                size = (bytes / 1073741824).toFixed(1) + " GB";
+                            } else {
+                                size = (bytes / 1048576).toFixed(0) + " MB";
                             }
-
-                            // Bóc tách Release Date
-                            if ((text.startsWith('Release Date') || text.startsWith('Release')) && el.nextElementSibling) {
-                                releaseDate = el.nextElementSibling.innerText.trim();
-                            } else if (text.includes('Release Date:')) {
-                                releaseDate = text.replace('Release Date:', '').trim();
-                            }
-                            
-                            // Bóc tách Size (Dự phòng nếu regex trượt)
-                            if (text.startsWith('Size') && el.nextElementSibling) {
-                                let fSize = el.nextElementSibling.innerText.trim();
-                                if(fSize.includes('GB') || fSize.includes('MB')) size = fSize;
-                            }
-                        });
+                        }
                     }
                 }
             } catch (error) {
-                console.log("Đã kích hoạt chế độ tự động điền do lỗi đường truyền hoặc Proxy.");
+                console.log("Không kết nối được API, chuyển sang sinh bộ khung rỗng.", error);
             }
 
-            // Tạo cấu trúc JSON chuẩn chỉnh với các thuộc tính mới phục vụ nâng cấp tương lai
             const finalJson = {
                 name: name,
                 id: id,
@@ -132,7 +103,6 @@
                 thumbnail: thumbnail
             };
 
-            // Hiển thị kết quả ra giao diện trực quan cho admin
             resultDiv.innerHTML = `
                 <h3 style="color: #2ed573; margin-top:0;">✅ Đã đồng bộ dữ liệu thành công!</h3>
                 <div class="game-info-preview">
@@ -143,19 +113,19 @@
                         <p><strong>ID:</strong> <code>${id}</code></p>
                         <p><strong>Publisher:</strong> ${publisher}</p>
                         <p><strong>Release Date:</strong> ${releaseDate}</p>
-                        <p><strong>Size:</strong> <span class="badge" style="background:#edf2f7; color:#4a5568;">${size}</span></p>
+                        <p><strong>Size:</strong> <span class="badge">${size}</span></p>
                     </div>
                 </div>
-                <p style="font-size: 14px; margin-bottom: 5px;">Click vào khung dưới để copy mã JSON rồi dán vào <b>games.json</b>:</p>
+                <p style="font-size: 14px; margin-bottom: 5px;">Bấm vào ô dưới để copy, sau đó dán vào file <b>games.json</b>:</p>
                 <textarea rows="11" readonly onclick="copyJsonText(this)">${JSON.stringify(finalJson, null, 4)},</textarea>
-                <p style="font-size: 11px; color: #a0aec0; margin-top: 5px;">💡 Chỉ cần bấm chuột vào ô text, mã sẽ tự động copy vào bộ nhớ tạm!</p>
+                <p style="font-size: 11px; color: #a0aec0; margin-top: 5px;">💡 Hệ thống tự động xử lý chuyển đổi dữ liệu kích thước chuẩn sang GB/MB cho bạn.</p>
             `;
         }
 
         function copyJsonText(textarea) {
             textarea.select();
             navigator.clipboard.writeText(textarea.value).then(() => {
-                alert('Đã copy đoạn mã JSON chi tiết vào Clipboard!');
+                alert('Đã tự động copy mã JSON vào bộ nhớ tạm!');
             }).catch(() => {
                 document.execCommand('copy');
             });
