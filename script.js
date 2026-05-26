@@ -6,10 +6,8 @@ async function initApp() {
         if (!response.ok) throw new Error('Không thể tải file games.json');
         allGames = await response.json();
         
-        // MỚI: Sắp xếp mặc định dữ liệu gốc theo Tên (A-Z) ngay sau khi tải
+        // Sắp xếp mặc định A-Z
         allGames.sort((a, b) => a.name.localeCompare(b.name));
-
-        // MỚI: Đảm bảo giao diện thanh Dropdown hiển thị đúng tùy chọn name-asc
         const sortSelect = document.getElementById('sort-select');
         if (sortSelect) {
             sortSelect.value = 'name-asc';
@@ -18,7 +16,7 @@ async function initApp() {
         setupListeners();
         updateView();
     } catch (error) {
-        document.getElementById('game-list').innerHTML = `<p style="color:red;">Lỗi: ${error.message}</p>`;
+        document.getElementById('game-list').innerHTML = `<p style="color:red; text-align:center;">Lỗi: ${error.message}</p>`;
     }
 }
 
@@ -36,7 +34,6 @@ function updateView() {
         game.id.toLowerCase().includes(searchTerm)
     );
 
-    // Xử lý sắp xếp theo lựa chọn hiện tại của người dùng
     if (sortType === 'name-asc') {
         processedGames.sort((a, b) => a.name.localeCompare(b.name));
     } else if (sortType === 'name-desc') {
@@ -51,23 +48,22 @@ function updateView() {
 function renderGames(games) {
     const container = document.getElementById('game-list');
     const countDisplay = document.getElementById('game-count');
-    
     countDisplay.innerText = games.length;
 
     if (games.length === 0) {
-        container.innerHTML = "<p>No result.</p>";
+        container.innerHTML = "<div class='loading-text'>No result.</div>";
         return;
     }
     
     container.innerHTML = games.map(game => `
         <div class="game-item">
-            <img src="${game.thumbnail || 'https://via.placeholder.com/80?text=No+Img'}" class="game-thumbnail" alt="${game.name}">
+            <img src="${game.thumbnail || 'https://via.placeholder.com/300x187?text=No+Image'}" class="game-thumbnail" alt="${game.name}">
             <div class="game-info">
                 <h3>${game.name}</h3>
                 <p>
                     <strong>ID:</strong> <code>${game.id}</code>
-                    <button class="copy-btn" onclick="copyToClipboard('${game.id}', this)">Copy ID</button>
-                    | <strong>Size:</strong> ${game.size} | <strong>Version:</strong> ${game.version}
+                    <button class="copy-btn" onclick="copyToClipboard('${game.id}', this)">Copy ID</button><br>
+                    <strong>Size:</strong> ${game.size} | <strong>Version:</strong> ${game.version}
                 </p>
                 <a href="${game.link}" class="game-link" target="_blank">Get link</a>
             </div>
@@ -80,10 +76,12 @@ window.copyToClipboard = function(text, button) {
         const originalText = button.innerText;
         button.innerText = "✅ Copied!";
         button.style.backgroundColor = "#2ecc71"; 
+        button.style.color = "#ffffff";
         
         setTimeout(() => {
             button.innerText = originalText;
             button.style.backgroundColor = ""; 
+            button.style.color = "";
         }, 1500);
     }).catch(err => {
         console.error('Lỗi khi copy: ', err);
