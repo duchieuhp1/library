@@ -39,10 +39,6 @@ body {
     gap: 10px;
 }
 
-.logo-icon {
-    font-size: 28px;
-}
-
 .nintendo-header h1 {
     margin: 0;
     font-size: 22px;
@@ -78,12 +74,7 @@ body {
     width: 250px;
     font-size: 14px;
     font-family: inherit;
-    transition: all 0.2s ease;
     box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.search-box:focus {
-    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.4), inset 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .sort-container {
@@ -151,58 +142,59 @@ body {
     display: flex;
     flex-direction: column;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
-    border: 3px solid transparent; /* Chuẩn bị cho hiệu ứng hover */
-    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
-                box-shadow 0.2s ease, 
-                border-color 0.2s ease;
+    border: 3px solid transparent;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .game-item:hover {
-    transform: translateY(-6px) scale(1.02);
+    transform: translateY(-6px);
     box-shadow: 0 12px 20px rgba(230, 0, 18, 0.15);
-    border-color: var(--nintendo-red); /* Viền đỏ giống UI của Switch */
+    border-color: var(--nintendo-red);
 }
 
-/* GAME ITEM CARD */
 .game-thumbnail {
     width: 100%;
-    aspect-ratio: 1 / 1; /* Ép tỷ lệ khung hình vuông hoàn hảo 1:1 */
-    object-fit: contain; /* Đảm bảo hiển thị đầy đủ toàn bộ ảnh mà không bị cắt xén */
-    background-color: var(--nintendo-dark); /* Thêm nền tối phía sau phòng trường hợp ảnh không vuông hẳn */
-    border-bottom: 1px solid #f0f0f0;
+    aspect-ratio: 16 / 10; /* Chuyển về tỷ lệ banner chữ nhật chuẩn game thay vì vuông ép góc */
+    object-fit: cover;
+    background-color: var(--nintendo-dark);
+}
+
+/* KHU VỰC CHỨA CHỮ - ĐÃ THÊM PADDING VÀ ĐỊNH HÌNH FLEX */
+.game-info {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; 
 }
 
 .game-info h3 {
-    margin: 0 0 12px 0;
-    padding-bottom: 12px;
-    font-size: 18px;
-    font-weight: 900;
-    line-height: 1.3;
-    color: var(--nintendo-red);
-    border-bottom: 2px solid var(--nintendo-red); 
-}
-
-.game-info h3 {
-    margin: 0 0 12px 0;
-    font-size: 18px;
+    margin: 0 0 8px 0;
+    font-size: 16px;
     font-weight: 700;
-    line-height: 1.3;
+    line-height: 1.4;
     color: var(--nintendo-dark);
+    min-height: 44px; /* Đảm bảo tên dài hay ngắn thì thẻ vẫn đều nhau */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .game-info p {
     font-size: 13px;
     color: var(--text-muted);
-    line-height: 1.6;
+    line-height: 1.8;
     margin: 0 0 16px 0;
+    border-top: 1px solid #f0f0f0;
+    padding-top: 8px;
 }
 
 .game-info code {
     background-color: #f4f4f4;
-    padding: 3px 6px;
+    padding: 2px 6px;
     border-radius: 4px;
     color: var(--nintendo-dark);
-    font-family: 'Courier New', monospace;
+    font-family: monospace;
     font-weight: bold;
 }
 
@@ -211,12 +203,12 @@ body {
     background-color: #E0E0E0;
     color: var(--nintendo-dark);
     border: none;
-    padding: 4px 10px;
-    border-radius: 12px;
+    padding: 2px 8px;
+    border-radius: 6px;
     font-size: 11px;
     font-weight: bold;
     cursor: pointer;
-    margin-left: 6px;
+    margin-left: 4px;
     transition: background-color 0.2s;
 }
 
@@ -225,14 +217,14 @@ body {
 }
 
 .game-link {
-    margin-top: auto; /* Đẩy nút xuống đáy card */
+    margin-top: auto; /* Đẩy nút luôn dính đáy */
     display: block;
     text-align: center;
     background-color: var(--nintendo-red);
     color: white;
     text-decoration: none;
     padding: 10px 15px;
-    border-radius: 20px; /* Nút hình viên thuốc */
+    border-radius: 20px;
     font-weight: bold;
     font-size: 14px;
     transition: background-color 0.2s, transform 0.1s;
@@ -260,10 +252,7 @@ body {
     }
 
     .search-box {
-        width: calc(100% - 45px); /* Trừ hao padding */
-    }
-    
-    .sort-container {
-        justify-content: space-between;
+        width: 100%;
+        box-sizing: border-box;
     }
 }
