@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Control Panel - Game Library</title>
+    
+    <link rel="stylesheet" href="css/admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="admin-container">
+    <h1>🔧 Quản trị viên: Chỉnh sửa & Thêm Game</h1>
+    
+    <div class="form-group">
+        <label>Tìm kiếm & Chọn Game:</label>
+        
+        <div class="searchable-dropdown" id="game-dropdown-container">
+            <input type="text" id="game-search-input" placeholder="🔍 Gõ tên hoặc ID game để tìm nhanh..." autocomplete="off">
+            <div id="game-dropdown-list" class="dropdown-list"></div>
+        </div>
+    </div>
+
+    <div id="editor-section" style="display:none;">
+        <h2>1. Metadata (Thông tin gốc)</h2>
+        <div class="form-group">
+            <label>Game ID (Mã hiệu game Switch):</label>
+            <input type="text" id="edit-id" placeholder="Ví dụ: 0100F2C0115B6000">
+        </div>
+        <div class="form-group">
+            <label>Tên Game:</label>
+            <input type="text" id="edit-name" placeholder="Ví dụ: The Legend of Zelda">
+        </div>
+        <div style="display:flex; gap:15px;">
+            <div class="form-group" style="flex:1;">
+                <label>Version:</label>
+                <input type="text" id="edit-version" value="NSP">
+            </div>
+            <div class="form-group" style="flex:1;">
+                <label>Size:</label>
+                <input type="text" id="edit-size" placeholder="Ví dụ: 17.6 GB">
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Link Ảnh Thumbnail:</label>
+            <input type="text" id="edit-thumbnail" placeholder="Link ảnh từ web hoặc tinfoil...">
+        </div>
+
+        <h2>2. Tags (Gắn nhãn)</h2>
+        <div class="form-group">
+            <label>Nhập Tags (cách nhau bằng dấu phẩy):</label>
+            <input type="text" id="edit-tags" placeholder="Ví dụ: RPG, Action, Co-op">
+        </div>
+
+        <h2>3. Links Download</h2>
+        <div id="links-container"></div>
+        <button onclick="addNewLinkRow()">+ Thêm danh mục Link (DLC, Update, Việt Hóa...)</button>
+
+        <button class="success" onclick="generateOutput()">💾 LƯU & XUẤT RA BLOCK CODE</button>
+    </div>
+
+    <div id="output-section" class="output-area">
+        <h2>✅ Đã xuất dữ liệu! Hãy Copy block code dưới đây:</h2>
+        <p style="color: #ffcccc; margin-top: 0; font-size: 14px;">
+            ⚠️ <b>Lưu ý:</b> Hãy tìm đúng ID game này trong file <code>data/games.json</code> để dán đè lên. Nhớ kiểm tra kỹ <b>dấu phẩy (,)</b> ngăn cách giữa các game!
+        </p>
+        <textarea id="out-games" readonly></textarea>
+    </div>
+</div>
+
+<script src="js/admin.js"></script>
+</body>
+</html>

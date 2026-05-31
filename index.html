@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nintendo Switch Library</title>
+    
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="ico.ico">
+</head>
+<body>
+    <header class="nintendo-header">
+        <div class="logo-area">
+        <img src="ico.ico" class="logo-custom-icon" alt="Logo">
+        <h1>Nintendo Switch Library</h1>
+    </div>
+        
+        <div class="toolbar">
+            <div class="search-container">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="search-input" class="search-box" placeholder="Search title, ID or tag...">
+            </div>
+
+            <div class="sort-container">
+                <label>Tags:</label>
+                <select id="tag-select">
+                    <option value="all">All Tags</option>
+                </select>
+            </div>
+            
+            <div class="sort-container">
+                <label>Sort by:</label>
+                <select id="sort-select">
+                    <option value="name-asc">Name (A-Z)</option>
+                    <option value="name-desc">Name (Z-A)</option>
+                    <option value="id-asc">Game ID</option>
+                </select>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="stats-bar">
+            <strong>Total Software:</strong> <span id="game-count" class="badge">0</span>
+        </div>
+        
+        <div id="game-list">
+            <div class="loading-text">Loading resources...</div>
+        </div>
+    </main>
+
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>
